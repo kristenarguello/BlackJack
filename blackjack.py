@@ -61,8 +61,7 @@ class Dealer:
                 self.soma += nova.value
         return self.soma
     def show_one(self):
-        print('-SHOWN CARD-')
-        print(self.mao[0].value)
+        print(f'\033[4;31m{self.mao[0].value}\033[m')
         print(self.mao[0])
         print('-HIDDEN CARD-')
         print('xx')
@@ -89,25 +88,25 @@ def valor_ace():
 
 def blackjack(p,d):
     if p == 21 and not d==21:
-        print('Player got BLACJACK! You won!')
+        print('\033[4;33\nPlayer got BLACKJACK! You won!\n\033[m')
         return True
     elif (not p == 21) and d==21:
-        print('Sorry, dealer got BLACKJACK')
+        print('\033[4;33\nSorry, dealer got BLACKJACK\n\033[m')
         dealer.cards()
         return True
     elif p == 21 and d == 21:
-        print('Both of you got BLACKJACK. But Dealer gets the prize')
+        print('\033[4;33\nBoth of you got BLACKJACK. But Dealer gets the prize\n\033[m')
     else: return False
 
 def lost(p,d):
     if p>21 and not d>21:
-        print('Player, you lost, you folded')
+        print('\033[4;33m\nPlayer, you lost, you folded!\033[m')      
         return True
     elif not p>21 and d>21:
-        print('Player, you won! Dealer folded')
+        print('\033[4;33m\nPlayer, you won! Dealer folded!\033[m')      
         return True
     elif p>21 and d>21:
-        print('Both of you folded! So, Dealer won')
+        print('\033[4;33m\nBoth of you folded! Dealer won\033[m')      
         return True
     else: return False
 
@@ -118,6 +117,7 @@ def restart(p,d):
             inp = str(input('Do you wanna keep playing? (Y or N)'))
             inp = inp.upper()
             if inp == 'Y':
+                print("\n"*1000)
                 return 1
             elif inp == 'N': 
                 return -1
@@ -130,7 +130,7 @@ def restart_two(p,d):
             inp = str(input('Do you wanna keep playing? (Y or N)'))
             inp = inp.upper()
             if inp == 'Y':
-                print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+                print("\n"*1000)
                 return 1
             elif inp == 'N': 
                 return -1
@@ -138,35 +138,38 @@ def restart_two(p,d):
 
 def who_won(p,d):
     if p>d:
-        print('PLAYER VALUE: ', p)
+        print('\033[4;30m\nEND OF GAME!\033[m')        
+        print(f'PLAYER VALUE: \033[4;31m{p}\033[m')
         player.cards()
         print('-----------------')
-        print('DEALER VALUE: ', d)
+        print(f'DEALER VALUE: \033[4;34m{p}\033[m')        
         dealer.cards()
-        print('\nCongratulations! Player won!')
+        print('\033[4;33m\nCongratulations! Player won!\033[m')        
     elif d>p:
-        print('PLAYER VALUE: ', p)
+        print('\033[4;30m\nEND OF GAME!\033[m')        
+        print(f'PLAYER VALUE: \033[4;31m{p}\033[m')        
         player.cards()
         print('-----------------')
-        print('DEALER VALUE: ', d)
+        print(f'DEALER VALUE: \033[4;34m{p}\033[m')        
         dealer.cards()
-        print('\nSorry, Dealer won...')
+        print('\033[4;33m\nSorry, dealer won...\033[m')  
     else:
-        print('PLAYER VALUE: ', p)
+        print('\033[4;30m\nEND OF GAME!\033[m')
+        print(f'PLAYER VALUE: \033[4;31m{p}\033[m')        
         player.cards()
         print('-----------------')
-        print('DEALER VALUE: ', d)
+        print(f'DEALER VALUE: \033[4;34m{p}\033[m')        
         dealer.cards()
-        print('\nIt was a tie. So, Dealer won this round')
+        print('\033[4;33m\nIt was a tie! So dealer won this round\033[m')      
     inp = 'null'
     while True:
-        inp = str(input('Do you wanna keep playing? (Y or N)'))
+        inp = str(input('\nDo you wanna keep playing? (Y or N)'))
         inp = inp.upper()
         if inp == 'Y':
-            print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+            print("\n"*1000)
             return True
         elif inp == 'N': 
-            print('Thanks for playing!')
+            print('\nThanks for playing!')
             return False
 
 def hit_stand():
@@ -185,14 +188,15 @@ while True:
     dealer = Dealer()
     player = Player()
 
-    print("Let's play BLACKJACK!")
-    print('\nPLAYER')
+    print(f"\nLet's play \033[4;30mBLACKJACK\033[m")
+
+    print(f'\033[4;34mPLAYER\033[m')
     player.compra(deck.deal())
     player.compra(deck.deal())
-    print(player.soma)
+    print(f'\033[4;34m{player.soma}\033[m')
     player.cards()
     print('-----------------')
-    print('DEALER')
+    print(f'\033[4;31mDEALER\033[m')    
     dealer.compra(deck.deal())
     dealer.compra(deck.deal())
     dealer.show_one()
@@ -208,18 +212,18 @@ while True:
 
     compraP = hit_stand()
     if not compraP:
-        print('\n\nSTAND!\n')
+        print(f"\n\n\033[4;30mSTAND\033[m")
         d_pode_comprar = dealer.buy_onemore()
         while d_pode_comprar:
-            print("DEALER'S TURN\n")
-            print(dealer.compra(deck.deal()))
+            print(f"\033[4;31m\nDEALER'S TURN\033[m")
+            print(f"\033[4;31m{dealer.compra(deck.deal())}\033[m")
             dealer.cards()
             d_pode_comprar = dealer.buy_onemore()
         play = restart_two(player.soma,dealer.soma)
         if play == 1:
             continue
         elif play==-1:
-            print('Thanks for playing!')
+            print('\nThanks for playing!')
             break
         elif play==0:
             value = who_won(player.soma,dealer.soma)
@@ -228,9 +232,10 @@ while True:
             else:
                 break
     while compraP:
-        print('\n\nHIT ME!')
-        print(player.compra(deck.deal()))
+        print(f"\n\n\033[4;30mHIT ME!\033[m")
+        print(f'\033[4;34m{player.compra(deck.deal())}\033[m')
         player.cards()
+        print('\n')
         play = restart_two(player.soma,dealer.soma)
         if play == 1:
             break
@@ -244,11 +249,11 @@ while True:
             compraP = False
             pass
         if not compraP:
-            print('\n\nSTAND!\n')
-            d_pode_comprar = dealer.buy_onemore()#ate linha 254 pode tirar, depende do quintana
+            print(f"\n\n\033[4;30mSTAND\033[m")
+            d_pode_comprar = dealer.buy_onemore()
             while d_pode_comprar:
-                print("DEALER'S TURN\n\n")
-                print(dealer.compra(deck.deal()))
+                print(f"\033[4;31m\nDEALER'S TURN\033[m")
+                print(f'\033[4;31m{dealer.compra(deck.deal())}\033[m')
                 dealer.cards()
                 d_pode_comprar = dealer.buy_onemore()
     if play == 1:
